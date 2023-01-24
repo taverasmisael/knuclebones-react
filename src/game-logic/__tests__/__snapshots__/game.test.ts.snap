@@ -1,0 +1,5 @@
+// Vitest Snapshot v1
+
+exports[`Game logic > a new game has an empty board 1`] = `"None()"`;
+
+exports[`Game logic > you can start a new game 1`] = `"Some({\\"top\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]],\\"bottom\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]]})"`;

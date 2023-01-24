@@ -1,0 +1,41 @@
+// Vitest Snapshot v1
+
+exports[`game-status > creatNewGameNotStarted 1`] = `
+{
+  "_type": "GAME_NOT_STARTED",
+  "board": "None()",
+  "currentPlayer": "None()",
+  "players": "None()",
+  "winner": "None()",
+}
+`;
+
+exports[`game-status > createNewGameOver (P1 winner) 1`] = `
+{
+  "_type": "GAME_OVER",
+  "board": "Some({\\"top\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]],\\"bottom\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]]})",
+  "currentPlayer": "None()",
+  "players": "Some({\\"top\\":\\"player2\\",\\"bottom\\":\\"player1\\"})",
+  "winner": "Some(\\"bottom\\")",
+}
+`;
+
+exports[`game-status > createNewGameOver (P2 winner) 1`] = `
+{
+  "_type": "GAME_OVER",
+  "board": "Some({\\"top\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]],\\"bottom\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]]})",
+  "currentPlayer": "None()",
+  "players": "Some({\\"top\\":\\"player2\\",\\"bottom\\":\\"player1\\"})",
+  "winner": "Some(\\"top\\")",
+}
+`;
+
+exports[`game-status > createNewGameRunning 1`] = `
+{
+  "_type": "GAME_RUNNING",
+  "board": "Some({\\"top\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]],\\"bottom\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]]})",
+  "currentPlayer": "Some(\\"bottom\\")",
+  "players": "Some({\\"top\\":\\"player2\\",\\"bottom\\":\\"player1\\"})",
+  "winner": "None()",
+}
+`;
