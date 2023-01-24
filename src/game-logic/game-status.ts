@@ -1,6 +1,6 @@
 import { Optional, None, Some } from '../utils/optional'
 import { createEmptyBoard, Board } from './board'
-import { PlayerBoardPosition, PlayerId } from './player'
+import { PairOfPlayers, PlayerBoardPosition, PlayerId } from './player'
 
 export enum GameStateTypes {
   GAME_RUNNING = 'GAME_RUNNING',
@@ -43,14 +43,15 @@ export interface GameNotStarted extends GameState {
 export type GameStatus = GameRunning | GameOver | GameNotStarted
 
 export function createNewGameRunning(
-  players: [PlayerId, PlayerId]
+  players: PairOfPlayers,
+  firstPlayer?: PlayerBoardPosition
 ): GameRunning {
   const gameState = createNewGameNotStarted()
   return {
     ...gameState,
     _type: GameStateTypes.GAME_RUNNING,
     board: Some(createEmptyBoard()),
-    currentPlayer: Some(PlayerBoardPosition.BOTTOM),
+    currentPlayer: Some(firstPlayer || PlayerBoardPosition.BOTTOM),
     players: Some({
       [PlayerBoardPosition.TOP]: players[1],
       [PlayerBoardPosition.BOTTOM]: players[0],

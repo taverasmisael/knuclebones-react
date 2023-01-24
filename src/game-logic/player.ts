@@ -4,3 +4,4 @@ export const PlayerBoardPosition = {
   TOP: 'top' as const,
   BOTTOM: 'bottom' as const,
 }
+export type PairOfPlayers = [PlayerId, PlayerId]

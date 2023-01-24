@@ -2,4 +2,8 @@
 
 exports[`Game logic > a new game has an empty board 1`] = `"None()"`;
 
+exports[`Game logic > bottom player can make a move 1`] = `"Some({\\"top\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]],\\"bottom\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"Some(3)\\",\\"None()\\"]]})"`;
+
+exports[`Game logic > top player can make a move 1`] = `"Some({\\"top\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"Some(3)\\",\\"None()\\"]],\\"bottom\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]]})"`;
+
 exports[`Game logic > you can start a new game 1`] = `"Some({\\"top\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]],\\"bottom\\":[[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"],[\\"None()\\",\\"None()\\",\\"None()\\"]]})"`;

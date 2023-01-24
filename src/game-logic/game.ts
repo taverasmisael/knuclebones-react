@@ -6,13 +6,16 @@ import {
   createNewGameNotStarted,
   GameState,
 } from './game-status'
-import { PlayerBoardPosition, PlayerId } from './player'
+import { PairOfPlayers, PlayerBoardPosition } from './player'
 import { canPlayerMove, checkForWinner, makeMove } from '../utils/game-helpers'
 
 export interface KnucklebonesGame {
   getGameStatus: () => GameState
   getBoard: () => Optional<Board>
-  start: (players: [PlayerId, PlayerId]) => KnucklebonesGame
+  start: (
+    players: PairOfPlayers,
+    currentPlayer?: PlayerBoardPosition
+  ) => KnucklebonesGame
   moveTopPlayer: (
     coordinate: BoardCoordinate,
     diceValue: DiceValue
@@ -43,7 +46,7 @@ export function newGame(gs?: GameState): KnucklebonesGame {
       move(PlayerBoardPosition.TOP, cords, diceValue),
     moveBottomPlayer: (cords: BoardCoordinate, diceValue: DiceValue) =>
       move(PlayerBoardPosition.BOTTOM, cords, diceValue),
-    start: (players: [PlayerId, PlayerId]) =>
-      newGame(createNewGameRunning(players)),
+    start: (players: PairOfPlayers, currentPlayer?: PlayerBoardPosition) =>
+      newGame(createNewGameRunning(players, currentPlayer)),
   }
 }

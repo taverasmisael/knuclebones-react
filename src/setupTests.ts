@@ -19,11 +19,15 @@ expect.extend({
       return {
         message: () => `expected ${received} to be None()`,
         pass: true,
+        actual: received,
+        expected: 'None()',
       }
     } else {
       return {
         message: () => `expected ${received} to be None()`,
         pass: false,
+        actual: received,
+        expected: 'None()',
       }
     }
   },
@@ -33,17 +37,23 @@ expect.extend({
         return {
           message: () => `expected ${received} to be Some(${expected})`,
           pass: true,
+          actual: received.unwrap(),
+          expected,
         }
       } else {
         return {
           message: () => `expected "${received.unwrap()}" to be "${expected}"`,
           pass: false,
+          actual: received.unwrap(),
+          expected,
         }
       }
     } else {
       return {
         message: () => `expected ${received} to be Some(${expected})`,
         pass: false,
+        actual: received,
+        expected,
       }
     }
   },
