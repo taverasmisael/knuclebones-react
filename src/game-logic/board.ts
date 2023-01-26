@@ -53,7 +53,9 @@ export function createFullBoardSlice(): BoardSlice {
 	);
 }
 
-export function createEmptyBoardSlice(position: PlayerBoardPosition = PlayerBoardPosition.BOTTOM): BoardSlice {
+export function createEmptyBoardSlice(
+	position: PlayerBoardPosition = PlayerBoardPosition.BOTTOM,
+): BoardSlice {
 	return Array.from({ length: 3 }, (_, ridx) =>
 		Array.from({ length: 3 }, (_, cidx) => ({
 			value: None(),
@@ -79,5 +81,13 @@ export function makeMoveOnBoard(
 			value: Some(value),
 			enabled: false,
 		};
+		// should enable the next (prev for top) row if all cells in the current row are played
+		const nextRow = position === PlayerBoardPosition.BOTTOM ? row + 1 : row - 1;
+		if (nextRow >= 0 && nextRow < 3) {
+			const nextRowCells = draft[position][nextRow];
+			if (draft[position][row].every((cell) => isSome(cell.value))) {
+				nextRowCells.forEach((cell) => (cell.enabled = true));
+			}
+		}
 	});
 }

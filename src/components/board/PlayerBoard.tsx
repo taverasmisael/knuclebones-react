@@ -1,6 +1,6 @@
 import { BoardCoordinate, BoardSlice, BoardPosition } from "../../game-logic/board";
 import { PlayerBoardPosition } from "../../game-logic/player";
-import { isNone, unwrapOr } from "../../utils/optional";
+import { unwrapOr } from "../../utils/optional";
 
 import styles from "./PlayerBoard.module.css";
 
@@ -20,12 +20,12 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 					<button
 						key={cell.id}
 						className={styles.cell}
-						disabled={isNone(cell.value) && !cell.enabled}
+						disabled={!cell.enabled}
 						onClick={onCellClick(rowIndex as BoardPosition, cellIndex as BoardPosition)}
 					>
 						{unwrapOr(
 							cell.value.map((v) => v.toString()),
-							`${rowIndex},${cellIndex}`,
+							"",
 						)}
 					</button>
 				)),

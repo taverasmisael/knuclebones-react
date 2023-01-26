@@ -9,11 +9,11 @@
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "lint": "rome check ./src/**/*.*",
-    "lint:fix": "rome check ./src/**/*.* --apply",
-    "lint:fix:force": "rome check ./src/**/*.* --apply-suggested",
-    "format": "rome format ./src/**/*.*",
-    "format:save": "rome format ./src/**/*.* --write"
+    "lint": "rome check ./src",
+    "lint:fix": "rome check ./src --apply",
+    "lint:fix:force": "rome check ./src --apply-suggested",
+    "format": "rome format ./src",
+    "format:save": "rome format ./src --write"
   },
   "dependencies": {
     "immer": "^9.0.18",

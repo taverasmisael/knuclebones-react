@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { reduce, flatten, pipe, filter } from "rambda";
+import { reduce, flatten, pipe, filter, range } from "rambda";
 import { isNone, isSome } from "../../utils/optional";
 import {
 	createEmptyBoard,
@@ -115,13 +115,43 @@ describe("board", () => {
 
 		test("should throw if the cell is already played", () => {
 			const board = createEmptyBoard();
-			const actual = makeMoveOnBoard(board, "top", [2, 0], 1);
-			expect(() => makeMoveOnBoard(actual, "top", [2, 0], 1)).toThrow(/played/gi);
+			const actual = makeMoveOnBoard(board, PlayerBoardPosition.TOP, [2, 0], 1);
+			expect(() => makeMoveOnBoard(actual, PlayerBoardPosition.TOP, [2, 0], 1)).toThrow(/played/gi);
 		});
 
 		test("should throw if the cell is not enabled", () => {
 			const board = createEmptyBoard();
-			expect(() => makeMoveOnBoard(board, "top", [0, 0], 1)).toThrow(/invalid move/gi);
+			expect(() => makeMoveOnBoard(board, PlayerBoardPosition.TOP, [0, 0], 1)).toThrow(
+				/invalid move/gi,
+			);
+		});
+
+		test("should enable the next (prev for top) row if all cells in the current row are played", () => {
+			const board = createEmptyBoard();
+			const boardCells = range(0, 3);
+			const actualTop = boardCells.reduce(
+				(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.TOP, [2, i], 1),
+				board,
+			);
+
+			expect(getEnabledIds(actualTop.top)).toEqual(["1-0", "1-1", "1-2"]);
+
+			const actualBottomOne = boardCells.reduce(
+				(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.BOTTOM, [0, i], 1),
+				board,
+			);
+			const actualBottomTwo = boardCells.reduce(
+				(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.BOTTOM, [1, i], 1),
+				actualBottomOne,
+			);
+			const actualBottomFull = boardCells.reduce(
+				(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.BOTTOM, [2, i], 1),
+				actualBottomTwo,
+			);
+
+			expect(getEnabledIds(actualBottomOne.bottom)).toEqual(["1-0", "1-1", "1-2"]);
+			expect(getEnabledIds(actualBottomTwo.bottom)).toEqual(["2-0", "2-1", "2-2"]);
+			expect(getEnabledIds(actualBottomFull.bottom)).toHaveLength(0);
 		});
 	});
 });
