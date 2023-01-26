@@ -1,5 +1,5 @@
 import { compose } from "rambda";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { KnucklebonesGame } from "./game";
 import { newGame } from "./game";
 import { GameState } from "./game-status";
@@ -15,6 +15,11 @@ export function useNewgame(): UseNewKnuclebonesGame {
 		_setGame(s);
 		return s;
 	};
+
+	useEffect(() => {
+		console.log(game.getGameStatus());
+	}, [game]);
+
 	return {
 		// Need to update state
 		moveBottomPlayer: compose(setGame, game.moveBottomPlayer),
