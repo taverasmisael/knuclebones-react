@@ -59,7 +59,7 @@ export function createEmptyBoardSlice(
 	return Array.from({ length: 3 }, (_, ridx) =>
 		Array.from({ length: 3 }, (_, cidx) => ({
 			value: None(),
-			enabled: position === PlayerBoardPosition.BOTTOM ? ridx === 0 : ridx === 2,
+			enabled: position === PlayerBoardPosition.BOTTOM ? cidx === 0 : cidx === 2,
 			id: `${ridx as BoardPosition}-${cidx as BoardPosition}`,
 		})),
 	);
@@ -74,20 +74,20 @@ export function makeMoveOnBoard(
 	return produce(board, (draft) => {
 		const [row, column] = coordinate;
 		const cell = draft[position][row][column];
-		if (isSome(cell.value)) throw new Error("Cell already played");
-		if (!cell.enabled) throw new Error("Invalid move");
+		if (isSome(cell.value)) throw new Error(`Cell already played ${cell.value}`);
+		if (!cell.enabled) throw new Error(`Invalid move on ${position} (${row}, ${column})`);
 		draft[position][row][column] = {
 			...cell,
 			value: Some(value),
 			enabled: false,
 		};
-		// should enable the next (prev for top) row if all cells in the current row are played
-		const nextRow = position === PlayerBoardPosition.BOTTOM ? row + 1 : row - 1;
-		if (nextRow >= 0 && nextRow < 3) {
-			const nextRowCells = draft[position][nextRow];
-			if (draft[position][row].every((cell) => isSome(cell.value))) {
-				nextRowCells.forEach((cell) => (cell.enabled = true));
-			}
+
+		const nextCell = position === PlayerBoardPosition.BOTTOM ? column + 1 : column - 1;
+		if (nextCell >= 0 && nextCell < 3) {
+			draft[position][row] = draft[position][row].map((cell, idx) => ({
+				...cell,
+				enabled: idx === nextCell,
+			}));
 		}
 	});
 }

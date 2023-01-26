@@ -1,10 +1,18 @@
 .board {
+  --board-grid: repeat(3, minmax(200px, 1fr));
+  --board-grid-gap: 1rem;
   display: grid;
-  grid-gap: 1rem;
-  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  grid-column-gap: var(--board-grid-gap);
+  grid-template-columns: var(--board-grid);
   margin: 2rem auto;
   max-width: 600px;
   width: 100%;
+}
+
+.row {
+  display: grid;
+  grid-gap: var(--board-grid-gap);
+  grid-template-rows: var(--board-grid);
 }
 
 .cell {
@@ -22,10 +30,14 @@
   justify-content: center;
 }
 
-.cell:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+
+.row:hover .cell {
+  box-shadow: 0 0 0 2px rgba(125, 235, 2, 0.4);
 }
 
+.cell:hover:not(:disabled) {
+  box-shadow: 0 0 0 2px rgba(125, 235, 2, 0.8);
+}
 .cell:disabled {
   background-color: rgba(255, 255, 255, 0.1);
   cursor: not-allowed;

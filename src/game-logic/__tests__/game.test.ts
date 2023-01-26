@@ -14,14 +14,14 @@ describe.only("Game logic", () => {
 	});
 
 	test("bottom player can make a move", () => {
-		const actual = newGame().start(["player1", "player2"]).moveBottomPlayer([0, 2], 3);
+		const actual = newGame().start(["player1", "player2"]).moveBottomPlayer([2, 0], 3);
 		expect(actual.getBoard()).toMatchSnapshot();
 	});
 
 	test("top player can make a move", () => {
 		const actual = newGame()
 			.start(["player1", "player2"], PlayerBoardPosition.TOP)
-			.moveTopPlayer([2, 1], 3);
+			.moveTopPlayer([1, 2], 5);
 		expect(actual.getBoard()).toMatchSnapshot();
 	});
 });
