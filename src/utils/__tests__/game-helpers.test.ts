@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
 	Board,
+	BoardCoordinate,
 	createEmptyBoard,
 	createEmptyBoardSlice,
 	createFullBoardSlice,
@@ -46,11 +47,12 @@ describe("makeMove", () => {
 			players: Some({ top: "", bottom: "" }),
 			winner: None(),
 		} satisfies GameState;
-		const actual = makeMove(PlayerBoardPosition.TOP, [1, 2], 2, gs);
+		const coords: BoardCoordinate = [2, 2];
+		const actual = makeMove(PlayerBoardPosition.TOP, coords, 2, gs);
 		expect(actual.board).not.toBe(gs.board);
-		expect(getValueOnCoordinates(actual.board.unwrap(), PlayerBoardPosition.TOP, [1, 2])).toBeSome(
-			2,
-		);
+		expect(
+			getValueOnCoordinates(actual.board.unwrap(), PlayerBoardPosition.TOP, coords).value,
+		).toBeSome(2);
 		expect(actual.currentPlayer).not.toBe(gs.currentPlayer);
 		expect(actual.currentPlayer).toBeSome(PlayerBoardPosition.BOTTOM);
 	});

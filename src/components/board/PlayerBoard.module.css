@@ -1,0 +1,32 @@
+.board {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  margin: 2rem auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+.cell {
+  appearance: none;
+  background-color: transparent;
+  align-items: center;
+  aspect-ratio: 1;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 2rem;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.cell:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cell:disabled {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+}

@@ -4,11 +4,17 @@ import { isSome, None, Optional, Some } from "../utils/optional";
 import { DiceValue } from "./dice";
 import { PlayerId, PlayerBoardPosition } from "./player";
 
-type BoardPosition = 0 | 1 | 2;
+export type BoardPosition = 0 | 1 | 2;
+export interface BoardValue {
+	id: `${BoardPosition}-${BoardPosition}`;
+	enabled: boolean;
+	value: Optional<DiceValue>;
+}
 export type BoardCoordinate = [BoardPosition, BoardPosition];
+export type BoardSlice = BoardValue[][];
 export interface Board {
-	top: Optional<DiceValue>[][];
-	bottom: Optional<DiceValue>[][];
+	top: BoardSlice;
+	bottom: BoardSlice;
 }
 export interface GameBoard {
 	board: Board;
@@ -17,7 +23,7 @@ export interface GameBoard {
 
 export function createEmptyBoard(): Board {
 	return {
-		top: createEmptyBoardSlice(),
+		top: createEmptyBoardSlice(PlayerBoardPosition.TOP),
 		bottom: createEmptyBoardSlice(),
 	};
 }
@@ -33,16 +39,28 @@ export function getValueOnCoordinates(
 	board: Board,
 	position: PlayerBoardPosition,
 	coordinate: BoardCoordinate,
-): Optional<DiceValue> {
+): BoardValue | None {
 	return pathOr(None(), [position, ...coordinate], board);
 }
 
-export function createFullBoardSlice(): Optional<DiceValue>[][] {
-	return Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => Some(1)));
+export function createFullBoardSlice(): BoardSlice {
+	return Array.from({ length: 3 }, (_, ridx) =>
+		Array.from({ length: 3 }, (_, cidx) => ({
+			value: Some(1),
+			enabled: false,
+			id: `${ridx as BoardPosition}-${cidx as BoardPosition}`,
+		})),
+	);
 }
 
-export function createEmptyBoardSlice(): Optional<DiceValue>[][] {
-	return Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => None()));
+export function createEmptyBoardSlice(position: PlayerBoardPosition = PlayerBoardPosition.BOTTOM): BoardSlice {
+	return Array.from({ length: 3 }, (_, ridx) =>
+		Array.from({ length: 3 }, (_, cidx) => ({
+			value: None(),
+			enabled: position === PlayerBoardPosition.BOTTOM ? ridx === 0 : ridx === 2,
+			id: `${ridx as BoardPosition}-${cidx as BoardPosition}`,
+		})),
+	);
 }
 
 export function makeMoveOnBoard(
@@ -54,7 +72,12 @@ export function makeMoveOnBoard(
 	return produce(board, (draft) => {
 		const [row, column] = coordinate;
 		const cell = draft[position][row][column];
-		if (isSome(cell)) throw new Error("Cell already played");
-		draft[position][row][column] = Some(value);
+		if (isSome(cell.value)) throw new Error("Cell already played");
+		if (!cell.enabled) throw new Error("Invalid move");
+		draft[position][row][column] = {
+			...cell,
+			value: Some(value),
+			enabled: false,
+		};
 	});
 }

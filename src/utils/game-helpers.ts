@@ -33,8 +33,8 @@ export const checkForWinner = (gs: GameState): GameState => {
 	if (isNone(gs.board)) return gs;
 	if (isNone(gs.players)) return gs;
 	const board = gs.board.unwrap();
-	const topFull = board.top.every((row) => row.every((cell) => isSome(cell)));
-	const bottomFull = board.bottom.every((row) => row.every((cell) => isSome(cell)));
+	const topFull = board.top.every((row) => row.every((cell) => isSome(cell.value)));
+	const bottomFull = board.bottom.every((row) => row.every((cell) => isSome(cell.value)));
 	if (topFull || bottomFull) {
 		return createNewGameOver(gs, topFull ? PlayerBoardPosition.TOP : PlayerBoardPosition.BOTTOM);
 	}
