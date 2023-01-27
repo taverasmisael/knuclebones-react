@@ -23,9 +23,7 @@ export function newGame(gs?: GameState): KnucklebonesGame {
 		diceValue: DiceValue,
 	): KnucklebonesGame => {
 		if (!canPlayerMove(player, gameStatus)) throw new Error("Not your turn");
-		return newGame(
-			checkForWinner(makeMove(player, cell, diceValue, gameStatus)),
-		);
+		return newGame(checkForWinner(makeMove(player, cell, diceValue, gameStatus)));
 	};
 
 	return {

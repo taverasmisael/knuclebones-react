@@ -45,12 +45,7 @@ function App() {
 		</>
 	));
 
-	return (
-		<>
-			<h1>Knucklebones</h1>
-			{unwrapOr(gameBoard, <></>)}
-		</>
-	);
+	return <>{unwrapOr(gameBoard, <></>)}</>;
 }
 
 export default App;

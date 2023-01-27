@@ -85,7 +85,7 @@ export function makeMoveOnBoard(
 			enabled: false,
 		};
 
-		const nextCell = column + 1 
+		const nextCell = column + 1;
 		if (nextCell < 3) {
 			draft[position][row] = draft[position][row].map((cell, idx) => ({
 				...cell,

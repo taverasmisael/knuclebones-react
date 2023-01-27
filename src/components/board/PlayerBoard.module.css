@@ -1,10 +1,32 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 600px 1fr;
+  grid-template-areas: 'infoLeft board infoRight';
+  margin: 2rem auto;
+}
+
+.containerTop {
+  --hover-color: rgba(125, 235, 2, 0.4);
+  --hover-highlight: rgba(125, 235, 2, 0.8);
+}
+.containerBottom {
+  --hover-color: rgba(225, 10, 30, 0.4);
+  --hover-highlight: rgba(225, 10, 30, 0.8);
+}
+
+.infoRight {
+  grid-area: infoRight;
+}
+.infoLeft {
+  grid-area: infoLeft;
+}
 .board {
   --board-grid: repeat(3, minmax(200px, 1fr));
   --board-grid-gap: 1rem;
   display: grid;
+  grid-area: board;
   grid-column-gap: var(--board-grid-gap);
   grid-template-columns: var(--board-grid);
-  margin: 2rem auto;
   max-width: 600px;
   width: 100%;
 }
@@ -36,13 +58,12 @@
   justify-content: center;
 }
 
-
 .row:hover .cell {
-  box-shadow: 0 0 0 2px rgba(125, 235, 2, 0.4);
+  box-shadow: 0 0 0 2px var(--hover-color);
 }
 
 .cell:hover:not(:disabled) {
-  box-shadow: 0 0 0 2px rgba(125, 235, 2, 0.8);
+  box-shadow: 0 0 0 2px var(--hover-highlight);
 }
 .cell:disabled {
   background-color: rgba(255, 255, 255, 0.1);

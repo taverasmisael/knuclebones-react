@@ -1,4 +1,4 @@
-import type React from "react";
+import clsx from "clsx";
 import * as rambda from "rambda";
 import { BoardSlice, CellId } from "../../game-logic/board";
 import { PlayerBoardPosition } from "../../game-logic/player";
@@ -13,30 +13,35 @@ interface PlayerBoardProps {
 	board: BoardSlice;
 }
 
+const getRowOrientation = <T,>(isTop: boolean, row: T[]) => (isTop ? rambda.reverse(row) : row);
+
 export default function PlayerBoard(props: PlayerBoardProps) {
 	const onCellClick = (cellId: CellId) => () => props.onSelect(cellId);
+	const isTop = props.position === PlayerBoardPosition.TOP;
 
-	const getRowOrientation = <T,>(row: T[]) =>
-		props.position === "top" ? rambda.reverse(row) : row;
-	console.log(props)
 	return (
-		<div className={`${styles.board} ${props.disabled ? styles.disabledBoard : ""}`}>
-			{props.board.map((row, rowIndex) => (
-				// rome-ignore lint/suspicious/noArrayIndexKey: this is a fixed size array
-				<div key={rowIndex} className={styles.row}>
-					{getRowOrientation(row).map((cell, cellIndex) => (
-						<button
-							key={cell.id}
-							data-cell-id={cellIndex}
-							className={styles.cell}
-							disabled={!cell.enabled}
-							onClick={onCellClick(cell.id)}
-						>
-							{unwrapOr(cell.value.map(rambda.toString), '')}
-						</button>
-					))}
-				</div>
-			))}
+		<div className={clsx(styles.container, styles[isTop ? "containerTop" : "containerBottom"])}>
+			<div className={clsx(styles.board, { [styles.disabledBoard]: props.disabled })}>
+				{props.board.map((row, rowIndex) => (
+					// rome-ignore lint/suspicious/noArrayIndexKey: this is a fixed size array
+					<div key={rowIndex} className={styles.row}>
+						{getRowOrientation(isTop, row).map((cell, cellIndex) => (
+							<button
+								key={cell.id}
+								data-cell-id={cellIndex}
+								className={styles.cell}
+								disabled={!cell.enabled}
+								onClick={onCellClick(cell.id)}
+							>
+								{unwrapOr(cell.value.map(rambda.toString), "")}
+							</button>
+						))}
+					</div>
+				))}
+			</div>
+			<div className={clsx({ [styles.infoLeft]: isTop, [styles.infoRight]: !isTop })}>
+				{isTop ? "Top" : "Bottom"} player
+			</div>
 		</div>
 	);
 }

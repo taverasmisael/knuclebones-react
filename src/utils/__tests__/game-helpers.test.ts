@@ -47,7 +47,7 @@ describe("makeMove", () => {
 			players: Some({ top: "", bottom: "" }),
 			winner: None(),
 		} satisfies GameState;
-		const cellId = '2-0';
+		const cellId = "2-0";
 		const coords = cellIdToCoordinate(cellId);
 		const actual = makeMove(PlayerBoardPosition.TOP, cellId, 2, gs);
 		expect(actual.board).not.toBe(gs.board);

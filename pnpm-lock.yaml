@@ -5,6 +5,7 @@ specifiers:
   '@types/react-dom': ^18.0.9
   '@vitejs/plugin-react': ^3.0.0
   '@vitest/coverage-c8': ^0.28.1
+  clsx: ^1.2.1
   immer: ^9.0.18
   rambda: ^7.4.0
   react: ^18.2.0
@@ -15,6 +16,7 @@ specifiers:
   vitest: ^0.28.1
 
 dependencies:
+  clsx: 1.2.1
   immer: 9.0.18
   rambda: 7.4.0
   react: 18.2.0
@@ -805,6 +807,11 @@ packages:
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
     dev: true
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}

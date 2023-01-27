@@ -44,20 +44,20 @@ describe("Optional types", () => {
 
 	describe("Some", () => {
 		test("should be Some", () => {
-			expect(Some("Hello")).toBeSome('Hello');
+			expect(Some("Hello")).toBeSome("Hello");
 		});
-		test('you can unwap a some', () => {
-			expect(Some('Hello').unwrap()).toBe('Hello');
-		})
+		test("you can unwap a some", () => {
+			expect(Some("Hello").unwrap()).toBe("Hello");
+		});
 	});
 	describe("None", () => {
 		test("should be None", () => {
 			expect(None()).toBeNone();
 		});
 
-		test('unwrapping a None throws', () => {
+		test("unwrapping a None throws", () => {
 			expect(() => None().unwrap()).toThrow();
-		})
+		});
 	});
 
 	describe("map", () => {
@@ -66,7 +66,7 @@ describe("Optional types", () => {
 			expect(map(Some(1), addOne)).toBeSome(2);
 		});
 		test("mapping over none always return none", () => {
-			expect(map(None(), addOne)).toBeNone()
+			expect(map(None(), addOne)).toBeNone();
 		});
 	});
 
