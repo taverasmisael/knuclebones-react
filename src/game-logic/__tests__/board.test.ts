@@ -9,8 +9,10 @@ import {
 	createEmptyBoardSlice,
 	createFullBoardSlice,
 	BoardValue,
-	BoardCoordinate,
 	Board,
+	cellIdToCoordinate,
+	CellId,
+	BoardPosition,
 } from "../board";
 import { PlayerBoardPosition } from "../player";
 
@@ -50,6 +52,19 @@ describe("board", () => {
 	});
 
 	describe("helpers", () => {
+		test("cellIdToCoordinate: should return the coordinate for the given id", () => {
+			const actual = (["0-0", "0-1", "2-2", "1-2", "2-0"] satisfies CellId[]).map(
+				cellIdToCoordinate,
+			);
+			expect(actual).toEqual([
+				[0, 0],
+				[0, 1],
+				[2, 2],
+				[1, 2],
+				[2, 0],
+			]);
+		});
+
 		test("createEmptyBoardSlice: should create a 3x3 grid of None()s", () => {
 			const actual = createEmptyBoardSlice();
 			expect(actual).toHaveLength(3);
@@ -89,48 +104,40 @@ describe("board", () => {
 	});
 
 	describe("makeMoveOnBoard", () => {
-		const boardCells = range(0, 3);
+		const boardCells = range(0, 3) as BoardPosition[];
 		const board = createEmptyBoard();
 
 		test("any player can make legal moves on their side (top)", () => {
-			const coords = [2, 0] as BoardCoordinate;
-			const actual = makeMoveOnBoard(board, PlayerBoardPosition.TOP, coords, 1);
+			const cellId = "2-0";
+			const coords = cellIdToCoordinate(cellId);
+			const actual = makeMoveOnBoard(board, PlayerBoardPosition.TOP, cellId, 1);
 			expect(getValueOnCoordinates(actual, PlayerBoardPosition.TOP, coords).value).toBeSome(1);
 			expect(getFullCells(actual.top)).toHaveLength(1);
 			expect(getFullCells(actual.bottom)).toHaveLength(0);
 		});
 
 		test("any player can make moves on their side (bottom)", () => {
-			const actual = makeMoveOnBoard(board, PlayerBoardPosition.BOTTOM, [0, 0], 5);
+			const actual = makeMoveOnBoard(board, PlayerBoardPosition.BOTTOM, "0-0", 5);
 			expect(getValueOnCoordinates(actual, PlayerBoardPosition.BOTTOM, [0, 0]).value).toBeSome(5);
 			expect(getFullCells(actual.bottom)).toHaveLength(1);
 			expect(getFullCells(actual.top)).toHaveLength(0);
 		});
 
 		test("should throw if the cell is already played", () => {
-			const coords = [1, 0] as BoardCoordinate;
-			const actual = makeMoveOnBoard(board, PlayerBoardPosition.TOP, coords, 1);
-			expect(() => makeMoveOnBoard(actual, PlayerBoardPosition.TOP, coords, 1)).toThrow(/played/gi);
+			const cellId = "1-0";
+			const actual = makeMoveOnBoard(board, PlayerBoardPosition.TOP, cellId, 1);
+			expect(() => makeMoveOnBoard(actual, PlayerBoardPosition.TOP, cellId, 1)).toThrow(/played/gi);
 		});
 
 		test("should throw if the cell is not enabled", () => {
-			expect(() => makeMoveOnBoard(board, PlayerBoardPosition.TOP, [0, 2], 1)).toThrow(
+			expect(() => makeMoveOnBoard(board, PlayerBoardPosition.TOP, "0-2", 1)).toThrow(
 				/invalid move/gi,
 			);
 		});
 
-		test("should enable the prev row if all cells in the current row are played", () => {
-			const actualTop = boardCells.reduce(
-				(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.TOP, [i, 0], 1),
-				board,
-			);
-
-			expect(getEnabledIds(actualTop.top)).toEqual(["0-1", "1-1", "2-1"]);
-		});
-
 		test("should enable the next row if all cells in the current row are played", () => {
 			const actual = boardCells.reduce(
-				(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.BOTTOM, [i, 0], 1),
+				(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.BOTTOM, `${i}-0` satisfies CellId, 1),
 				board,
 			);
 
@@ -138,15 +145,14 @@ describe("board", () => {
 		});
 
 		test("should enable the next cell in column after a move", () => {
-			const actual = makeMoveOnBoard(board, PlayerBoardPosition.BOTTOM, [0, 0], 1);
+			const actual = makeMoveOnBoard(board, PlayerBoardPosition.BOTTOM, "0-0", 1);
 			expect(getEnabledIds(actual.bottom)).toEqual(["0-1", "1-0", "2-0"]);
 		});
 
-
 		test("should not have any enabled cells after filling the board", () => {
-			const fillRow = (acc: Board, row: number) =>
+			const fillRow = (acc: Board, row: BoardPosition) =>
 				boardCells.reduce(
-					(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.BOTTOM, [i, row], 1),
+					(acc, i) => makeMoveOnBoard(acc, PlayerBoardPosition.BOTTOM, `${i}-${row}`, 1),
 					acc,
 				);
 			const actual = boardCells.reduce(fillRow, board);

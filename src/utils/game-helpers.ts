@@ -1,5 +1,5 @@
 import produce from "immer";
-import { BoardCoordinate, makeMoveOnBoard, Board } from "../game-logic/board";
+import { makeMoveOnBoard, Board, CellId } from "../game-logic/board";
 import { DiceValue } from "../game-logic/dice";
 import { GameState, isGameRunning, createNewGameOver } from "../game-logic/game-status";
 import { PlayerBoardPosition } from "../game-logic/player";
@@ -7,14 +7,14 @@ import { isNone, Some, isSome } from "./optional";
 
 export const makeMove = (
 	player: PlayerBoardPosition,
-	coordinate: BoardCoordinate,
+	cellId: CellId,
 	diceValue: DiceValue,
 	gameStatus: GameState,
 ) =>
 	produce(gameStatus, (gs: GameState) => {
 		if (!isGameRunning(gs)) return;
 		gs.board = gs.board.map((b) =>
-			makeMoveOnBoard(b, player, coordinate, diceValue),
+			makeMoveOnBoard(b, player, cellId, diceValue),
 		) as Some<Board>;
 		gs.currentPlayer = Some(
 			player === PlayerBoardPosition.TOP ? PlayerBoardPosition.BOTTOM : PlayerBoardPosition.TOP,

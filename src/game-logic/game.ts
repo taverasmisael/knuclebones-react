@@ -1,5 +1,5 @@
 import type { Optional } from "../utils/optional";
-import { Board, CellId, cellIdToCoordinate } from "./board";
+import { Board, CellId } from "./board";
 import { DiceValue } from "./dice";
 import { createNewGameRunning, createNewGameNotStarted, GameState } from "./game-status";
 import { PairOfPlayers, PlayerBoardPosition } from "./player";
@@ -24,7 +24,7 @@ export function newGame(gs?: GameState): KnucklebonesGame {
 	): KnucklebonesGame => {
 		if (!canPlayerMove(player, gameStatus)) throw new Error("Not your turn");
 		return newGame(
-			checkForWinner(makeMove(player, cellIdToCoordinate(cell), diceValue, gameStatus)),
+			checkForWinner(makeMove(player, cell, diceValue, gameStatus)),
 		);
 	};
 

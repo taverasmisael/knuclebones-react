@@ -71,11 +71,11 @@ export function createEmptyBoardSlice(): BoardSlice {
 export function makeMoveOnBoard(
 	board: Board,
 	position: PlayerBoardPosition,
-	coordinate: [number, number],
+	cellId: CellId,
 	value: DiceValue,
 ): Board {
 	return produce(board, (draft) => {
-		const [row, column] = coordinate;
+		const [row, column] = cellIdToCoordinate(cellId);
 		const cell = draft[position][row][column];
 		if (isSome(cell.value)) throw new Error(`Cell already played ${cell.value}`);
 		if (!cell.enabled) throw new Error(`Invalid move on ${position} (${row}, ${column})`);
