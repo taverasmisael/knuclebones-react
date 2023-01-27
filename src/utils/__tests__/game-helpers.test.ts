@@ -47,7 +47,7 @@ describe("makeMove", () => {
 			players: Some({ top: "", bottom: "" }),
 			winner: None(),
 		} satisfies GameState;
-		const coords: BoardCoordinate = [2, 2];
+		const coords: BoardCoordinate = [2, 0];
 		const actual = makeMove(PlayerBoardPosition.TOP, coords, 2, gs);
 		expect(actual.board).not.toBe(gs.board);
 		expect(

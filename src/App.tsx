@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./App.css";
 import { Board } from "./components/board";
-import { BoardCoordinate } from "./game-logic/board";
+import { CellId } from "./game-logic/board";
 import { DiceValue } from "./game-logic/dice";
 import { PlayerBoardPosition } from "./game-logic/player";
 import { useNewgame } from "./game-logic/useKnucklebonesGame";
@@ -19,11 +19,11 @@ function App() {
 		game.start(["Marcos", "Rome"]);
 	}, []);
 
-	const onSelect = (player: PlayerBoardPosition) => (coords: BoardCoordinate) => {
+	const onSelect = (player: PlayerBoardPosition) => (cell: CellId) => {
 		if (player === "top") {
-			game.moveTopPlayer(coords, rnd(1, 6));
+			game.moveTopPlayer(cell, rnd(1, 6));
 		} else {
-			game.moveBottomPlayer(coords, rnd(1, 6));
+			game.moveBottomPlayer(cell, rnd(1, 6));
 		}
 	};
 

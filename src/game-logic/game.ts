@@ -1,36 +1,40 @@
 import type { Optional } from "../utils/optional";
-import { Board, BoardCoordinate } from "./board";
+import { Board, CellId, cellIdToCoordinate } from "./board";
 import { DiceValue } from "./dice";
 import { createNewGameRunning, createNewGameNotStarted, GameState } from "./game-status";
 import { PairOfPlayers, PlayerBoardPosition } from "./player";
 import { canPlayerMove, checkForWinner, makeMove } from "../utils/game-helpers";
 
+type MakeMove = (cell: CellId, diceValue: DiceValue) => KnucklebonesGame;
+
 export interface KnucklebonesGame {
 	getGameStatus: () => GameState;
 	getBoard: () => Optional<Board>;
 	start: (players: PairOfPlayers, currentPlayer?: PlayerBoardPosition) => KnucklebonesGame;
-	moveTopPlayer: (coordinate: BoardCoordinate, diceValue: DiceValue) => KnucklebonesGame;
-	moveBottomPlayer: (coordinate: BoardCoordinate, diceValue: DiceValue) => KnucklebonesGame;
+	moveTopPlayer: MakeMove;
+	moveBottomPlayer: MakeMove;
 }
 
 export function newGame(gs?: GameState): KnucklebonesGame {
 	const gameStatus: GameState = gs || createNewGameNotStarted();
 	const move = (
 		player: PlayerBoardPosition,
-		coords: BoardCoordinate,
+		cell: CellId,
 		diceValue: DiceValue,
 	): KnucklebonesGame => {
 		if (!canPlayerMove(player, gameStatus)) throw new Error("Not your turn");
-		return newGame(checkForWinner(makeMove(player, coords, diceValue, gameStatus)));
+		return newGame(
+			checkForWinner(makeMove(player, cellIdToCoordinate(cell), diceValue, gameStatus)),
+		);
 	};
 
 	return {
 		getGameStatus: () => gameStatus,
 		getBoard: () => gameStatus.board,
-		moveTopPlayer: (cords: BoardCoordinate, diceValue: DiceValue) =>
-			move(PlayerBoardPosition.TOP, cords, diceValue),
-		moveBottomPlayer: (cords: BoardCoordinate, diceValue: DiceValue) =>
-			move(PlayerBoardPosition.BOTTOM, cords, diceValue),
+		moveTopPlayer: (cell: CellId, diceValue: DiceValue) =>
+			move(PlayerBoardPosition.TOP, cell, diceValue),
+		moveBottomPlayer: (cell: CellId, diceValue: DiceValue) =>
+			move(PlayerBoardPosition.BOTTOM, cell, diceValue),
 		start: (players: PairOfPlayers, currentPlayer?: PlayerBoardPosition) =>
 			newGame(createNewGameRunning(players, currentPlayer)),
 	};

@@ -5,8 +5,9 @@ import { DiceValue } from "./dice";
 import { PlayerId, PlayerBoardPosition } from "./player";
 
 export type BoardPosition = 0 | 1 | 2;
+export type CellId = `${BoardPosition}-${BoardPosition}`;
 export interface BoardValue {
-	id: `${BoardPosition}-${BoardPosition}`;
+	id: CellId;
 	enabled: boolean;
 	value: Optional<DiceValue>;
 }
@@ -21,9 +22,13 @@ export interface GameBoard {
 	makeMove(player: PlayerId, row: number, column: number, value: DiceValue): Board;
 }
 
+export function cellIdToCoordinate(id: CellId): BoardCoordinate {
+	return id.split("-").map(Number) as [BoardPosition, BoardPosition];
+}
+
 export function createEmptyBoard(): Board {
 	return {
-		top: createEmptyBoardSlice(PlayerBoardPosition.TOP),
+		top: createEmptyBoardSlice(),
 		bottom: createEmptyBoardSlice(),
 	};
 }
@@ -53,13 +58,11 @@ export function createFullBoardSlice(): BoardSlice {
 	);
 }
 
-export function createEmptyBoardSlice(
-	position: PlayerBoardPosition = PlayerBoardPosition.BOTTOM,
-): BoardSlice {
+export function createEmptyBoardSlice(): BoardSlice {
 	return Array.from({ length: 3 }, (_, ridx) =>
 		Array.from({ length: 3 }, (_, cidx) => ({
 			value: None(),
-			enabled: position === PlayerBoardPosition.BOTTOM ? cidx === 0 : cidx === 2,
+			enabled: cidx === 0,
 			id: `${ridx as BoardPosition}-${cidx as BoardPosition}`,
 		})),
 	);
@@ -82,8 +85,8 @@ export function makeMoveOnBoard(
 			enabled: false,
 		};
 
-		const nextCell = position === PlayerBoardPosition.BOTTOM ? column + 1 : column - 1;
-		if (nextCell >= 0 && nextCell < 3) {
+		const nextCell = column + 1 
+		if (nextCell < 3) {
 			draft[position][row] = draft[position][row].map((cell, idx) => ({
 				...cell,
 				enabled: idx === nextCell,
