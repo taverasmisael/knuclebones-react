@@ -9,6 +9,12 @@
   width: 100%;
 }
 
+.board.disabledBoard {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
 .row {
   display: grid;
   grid-gap: var(--board-grid-gap);

@@ -5,7 +5,7 @@ import { CellId } from "./game-logic/board";
 import { DiceValue } from "./game-logic/dice";
 import { PlayerBoardPosition } from "./game-logic/player";
 import { useNewgame } from "./game-logic/useKnucklebonesGame";
-import { unwrapOr } from "./utils/optional";
+import { unwrapOr, contains } from "./utils/optional";
 
 function rnd(min: DiceValue, max: DiceValue): DiceValue {
 	// min and max included
@@ -30,12 +30,14 @@ function App() {
 	const gameBoard = game.getBoard().map((b) => (
 		<>
 			<Board
+				disabled={contains(game.currentPlayer, PlayerBoardPosition.BOTTOM)}
 				position={PlayerBoardPosition.TOP}
 				board={b.top}
 				onSelect={onSelect(PlayerBoardPosition.TOP)}
 			/>
 			<hr />
 			<Board
+				disabled={contains(game.currentPlayer, PlayerBoardPosition.TOP)}
 				position={PlayerBoardPosition.BOTTOM}
 				board={b.bottom}
 				onSelect={onSelect(PlayerBoardPosition.BOTTOM)}
