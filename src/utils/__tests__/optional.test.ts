@@ -1,21 +1,21 @@
-import { describe, it, test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 import { Optional, Some, None, isNone, isSome, map, unwrapOr, contains } from "../optional";
 
 describe("Optional types", () => {
 	describe("isSome", () => {
-		it("should return true for Some", () => {
+		test("should return true for Some", () => {
 			expect(isSome(Some(1))).toBe(true);
 		});
-		it("should return false for None", () => {
+		test("should return false for None", () => {
 			expect(isSome(None())).toBe(false);
 		});
 	});
 
 	describe("isNone", () => {
-		it("should return true for None", () => {
+		test("should return true for None", () => {
 			expect(isNone(None())).toBe(true);
 		});
-		it("should return false for Some", () => {
+		test("should return false for Some", () => {
 			expect(isNone(Some(1))).toBe(false);
 		});
 	});
@@ -43,31 +43,38 @@ describe("Optional types", () => {
 	});
 
 	describe("Some", () => {
-		it("should be Some", () => {
-			expect(isSome(Some(1))).toBe(true);
+		test("should be Some", () => {
+			expect(Some("Hello")).toBeSome('Hello');
 		});
+		test('you can unwap a some', () => {
+			expect(Some('Hello').unwrap()).toBe('Hello');
+		})
 	});
 	describe("None", () => {
-		it("should be None", () => {
-			expect(isNone(None())).toBe(true);
+		test("should be None", () => {
+			expect(None()).toBeNone();
 		});
+
+		test('unwrapping a None throws', () => {
+			expect(() => None().unwrap()).toThrow();
+		})
 	});
 
 	describe("map", () => {
 		const addOne = (x: number) => x + 1;
-		it("should map Some values", () => {
-			expect(isSome(map(Some(1), addOne))).toBe(true);
+		test("should map Some values", () => {
+			expect(map(Some(1), addOne)).toBeSome(2);
 		});
-		it("mapping over none always return none", () => {
-			expect(isNone(map(None(), addOne))).toBe(true);
+		test("mapping over none always return none", () => {
+			expect(map(None(), addOne)).toBeNone()
 		});
 	});
 
 	describe("Optional", () => {
-		it("should return Some", () => {
+		test("should return Some", () => {
 			expect(isSome(Optional(1))).toBe(true);
 		});
-		it("should return None", () => {
+		test("should return None", () => {
 			expect(isNone(Optional(null))).toBe(true);
 		});
 	});
