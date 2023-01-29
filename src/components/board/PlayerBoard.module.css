@@ -1,6 +1,12 @@
 .container {
+  --board-grid: repeat(3, minmax(200px, 1fr));
+  --board-grid-gap: 1rem;
+  --column-gap: 2rem;
   display: grid;
-  grid-template-columns: 1fr 600px 1fr;
+  grid-template-columns:
+    1fr calc(600px + (var(--column-gap)))
+    1fr;
+  column-gap: var(--column-gap, 2rem);
   grid-template-areas: 'infoLeft board infoRight';
   margin: 2rem auto;
 }
@@ -21,8 +27,6 @@
   grid-area: infoLeft;
 }
 .board {
-  --board-grid: repeat(3, minmax(200px, 1fr));
-  --board-grid-gap: 1rem;
   display: grid;
   grid-area: board;
   grid-column-gap: var(--board-grid-gap);

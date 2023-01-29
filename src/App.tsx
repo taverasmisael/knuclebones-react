@@ -27,23 +27,28 @@ function App() {
 		}
 	};
 
-	const gameBoard = game.getBoard().map((b) => (
-		<>
-			<Board
-				disabled={contains(game.currentPlayer, PlayerBoardPosition.BOTTOM)}
-				position={PlayerBoardPosition.TOP}
-				board={b.top}
-				onSelect={onSelect(PlayerBoardPosition.TOP)}
-			/>
-			<hr />
-			<Board
-				disabled={contains(game.currentPlayer, PlayerBoardPosition.TOP)}
-				position={PlayerBoardPosition.BOTTOM}
-				board={b.bottom}
-				onSelect={onSelect(PlayerBoardPosition.BOTTOM)}
-			/>
-		</>
-	));
+	const gameBoard = game.getBoard().map((b) => {
+		const players = game.players.unwrap();
+		return (
+			<>
+				<Board
+					enabled={contains(game.currentPlayer, PlayerBoardPosition.TOP)}
+					position={PlayerBoardPosition.TOP}
+					player={players.top}
+					board={b.top}
+					onSelect={onSelect(PlayerBoardPosition.TOP)}
+				/>
+				<hr />
+				<Board
+					enabled={contains(game.currentPlayer, PlayerBoardPosition.BOTTOM)}
+					position={PlayerBoardPosition.BOTTOM}
+					board={b.bottom}
+					player={players.bottom}
+					onSelect={onSelect(PlayerBoardPosition.BOTTOM)}
+				/>
+			</>
+		);
+	});
 
 	return <>{unwrapOr(gameBoard, <></>)}</>;
 }

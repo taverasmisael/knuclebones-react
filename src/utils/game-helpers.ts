@@ -13,10 +13,11 @@ export const makeMove = (
 ) =>
 	produce(gameStatus, (gs: GameState) => {
 		if (!isGameRunning(gs)) return;
+		if (isNone(gs.currentPlayer)) return;
 		gs.board = gs.board.map((b) => makeMoveOnBoard(b, player, cellId, diceValue)) as Some<Board>;
-		gs.currentPlayer = Some(
+		gs.currentPlayer = gs.currentPlayer.map((_) =>
 			player === PlayerBoardPosition.TOP ? PlayerBoardPosition.BOTTOM : PlayerBoardPosition.TOP,
-		);
+		) as Some<PlayerBoardPosition>;
 	});
 
 export const canPlayerMove = (player: PlayerBoardPosition, gs: GameState): boolean => {

@@ -1,13 +1,15 @@
 import clsx from "clsx";
 import * as rambda from "rambda";
 import { BoardSlice, CellId } from "../../game-logic/board";
-import { PlayerBoardPosition } from "../../game-logic/player";
+import { PlayerBoardPosition, PlayerId } from "../../game-logic/player";
 import { unwrapOr } from "../../utils/optional";
 
 import styles from "./PlayerBoard.module.css";
+import PlayerInfo from "./PlayerInfo";
 
 interface PlayerBoardProps {
-	disabled?: boolean;
+	enabled?: boolean;
+	player: PlayerId;
 	position: PlayerBoardPosition;
 	onSelect: (cell: CellId) => void;
 	board: BoardSlice;
@@ -21,7 +23,10 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 
 	return (
 		<div className={clsx(styles.container, styles[isTop ? "containerTop" : "containerBottom"])}>
-			<div className={clsx(styles.board, { [styles.disabledBoard]: props.disabled })}>
+			<div
+				aria-disabled={!props.enabled}
+				className={clsx(styles.board, { [styles.disabledBoard]: !props.enabled })}
+			>
 				{props.board.map((row, rowIndex) => (
 					// rome-ignore lint/suspicious/noArrayIndexKey: this is a fixed size array
 					<div key={rowIndex} className={styles.row}>
@@ -40,7 +45,7 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 				))}
 			</div>
 			<div className={clsx({ [styles.infoLeft]: isTop, [styles.infoRight]: !isTop })}>
-				{isTop ? "Top" : "Bottom"} player
+				<PlayerInfo enabled={props.enabled} playerId={props.player} />
 			</div>
 		</div>
 	);
