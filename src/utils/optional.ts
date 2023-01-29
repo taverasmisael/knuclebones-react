@@ -19,7 +19,7 @@ export interface None extends Maybe<never> {
 export type Optional<T> = Some<T> | None;
 type NonNullable = string | number | boolean | symbol | object;
 
-export function Optional<T>(value: T): Optional<T> {
+export function Optional<T>(value?: T): Optional<T> {
 	if (value == null) {
 		return None();
 	}
@@ -32,14 +32,6 @@ export function isNone<T>(value: Optional<T>): value is None {
 
 export function isSome<T>(value: Optional<T>): value is Some<T> {
 	return value._type === "SOME";
-}
-
-export function map<T, R>(value: Optional<T>, fn: (value: T) => R): Optional<R> {
-	if (isNone(value)) {
-		return None();
-	}
-
-	return Optional(fn(value.value));
 }
 
 export function Some<T extends NonNullable>(value: T): Some<T> {
@@ -78,4 +70,18 @@ export function contains<T>(value: Optional<T>, search: T): boolean {
 		return false;
 	}
 	return value.value === search;
+}
+
+export function flat<T>(value: Optional<Optional<T>>): Optional<T> {
+	if (isNone(value)) {
+		return None();
+	}
+	return value.value;
+}
+
+export function flatMap<T, R>(value: Optional<T>, fn: (value: T) => Optional<R>): Optional<R> {
+	if (isNone(value)) {
+		return None();
+	}
+	return fn(value.value);
 }

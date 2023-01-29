@@ -9,6 +9,7 @@ import PlayerInfo from "./PlayerInfo";
 
 interface PlayerBoardProps {
 	enabled?: boolean;
+	debug?: boolean;
 	player: PlayerId;
 	position: PlayerBoardPosition;
 	onSelect: (cell: CellId) => void;
@@ -23,6 +24,7 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 
 	return (
 		<div className={clsx(styles.container, styles[isTop ? "containerTop" : "containerBottom"])}>
+			{props.debug && <div className={styles.debugRibbon}>DEBUG MODE ENABLED</div>}
 			<div
 				aria-disabled={!props.enabled}
 				className={clsx(styles.board, { [styles.disabledBoard]: !props.enabled })}
@@ -38,7 +40,7 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 								disabled={!cell.enabled}
 								onClick={onCellClick(cell.id)}
 							>
-								{unwrapOr(cell.value.map(rambda.toString), "")}
+								{unwrapOr(cell.value.map(rambda.toString), props.debug ? cell.id : "")}
 							</button>
 						))}
 					</div>

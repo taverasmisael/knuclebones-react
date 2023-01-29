@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { reduce, flatten, pipe, filter, range } from "rambda";
-import { isNone, isSome } from "../../utils/optional";
+import { isNone, isSome, None } from "../../utils/optional";
 import {
 	createEmptyBoard,
 	createFullBoard,
@@ -13,8 +13,10 @@ import {
 	cellIdToCoordinate,
 	CellId,
 	BoardPosition,
+	getNextValidMove,
 } from "../board";
 import { PlayerBoardPosition } from "../player";
+import produce from "immer";
 
 describe("board", () => {
 	const getEnabledIds = pipe(
@@ -158,6 +160,33 @@ describe("board", () => {
 			const actual = boardCells.reduce(fillRow, board);
 
 			expect(getEnabledIds(actual.bottom)).toHaveLength(0);
+		});
+	});
+
+	describe("getNextValidMove", () => {
+		test("should return the first available cell", () => {
+			const board = createEmptyBoardSlice();
+			const actual = getNextValidMove(board, 0);
+			expect(actual).toBeSome("0-0");
+		});
+
+		test("should return None() if the board is full", () => {
+			const board = createFullBoardSlice();
+			const actual = getNextValidMove(board, 0);
+			expect(actual).toBeNone();
+		});
+
+		test("should return the first valid move if the position passed is not valid but there are valid moves", () => {
+			const board = produce(createFullBoardSlice(), (b) => {
+				b[0][0] = {
+					value: None(),
+					enabled: true,
+					id: "0-0",
+				};
+			});
+			// asking for the Third cell, but the first cell is the only available
+			const actual = getNextValidMove(board, 2);
+			expect(actual).toBeSome("0-0");
 		});
 	});
 });

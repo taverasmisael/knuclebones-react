@@ -94,3 +94,13 @@ export function makeMoveOnBoard(
 		}
 	});
 }
+
+export function getNextValidMove(board: BoardSlice, move?: BoardPosition): Optional<CellId> {
+	const validCells = board.flat().filter((cell) => cell.enabled);
+	const idx = Math.min(
+		move ?? Math.floor(Math.random() * validCells.length),
+		validCells.length - 1,
+	);
+	const cellId = validCells.map((cell) => cell.id)[idx];
+	return Optional(cellId);
+}
