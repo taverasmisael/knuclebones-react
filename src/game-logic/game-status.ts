@@ -8,11 +8,18 @@ export enum GameStateTypes {
 	GAME_NOT_STARTED = "GAME_NOT_STARTED",
 }
 
+export type ScoreBoard = Record<PlayerBoardPosition, number>;
+export type GamePlayer = {
+	name: string;
+	score: number;
+};
+export type PlayerRecord = Record<PlayerBoardPosition, GamePlayer>;
+
 export interface GameState {
 	readonly _type: GameStateTypes;
 	board: Optional<Board>;
 	currentPlayer: Optional<PlayerBoardPosition>;
-	players: Optional<Record<PlayerBoardPosition, string>>;
+	players: Optional<PlayerRecord>;
 	winner: Optional<PlayerId>;
 }
 
@@ -20,7 +27,7 @@ export interface GameRunning extends GameState {
 	readonly _type: GameStateTypes.GAME_RUNNING;
 	board: Some<Board>;
 	currentPlayer: Some<PlayerBoardPosition>;
-	players: Some<Record<PlayerBoardPosition, string>>;
+	players: Some<PlayerRecord>;
 	winner: None;
 }
 
@@ -29,7 +36,7 @@ export interface GameOver extends GameState {
 	board: Some<Board>;
 	currentPlayer: None;
 	winner: Some<PlayerBoardPosition>;
-	players: Some<Record<PlayerBoardPosition, string>>;
+	players: Some<PlayerRecord>;
 }
 
 export interface GameNotStarted extends GameState {
@@ -53,8 +60,14 @@ export function createNewGameRunning(
 		board: Some(createEmptyBoard()),
 		currentPlayer: Some(firstPlayer || PlayerBoardPosition.BOTTOM),
 		players: Some({
-			[PlayerBoardPosition.TOP]: players[1],
-			[PlayerBoardPosition.BOTTOM]: players[0],
+			[PlayerBoardPosition.TOP]: {
+				name: players[0],
+				score: 0,
+			},
+			[PlayerBoardPosition.BOTTOM]: {
+				name: players[1],
+				score: 0,
+			},
 		}),
 	};
 }

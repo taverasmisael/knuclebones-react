@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import * as rambda from "rambda";
 import { BoardSlice, CellId } from "../../game-logic/board";
-import { PlayerBoardPosition, PlayerId } from "../../game-logic/player";
+import { GamePlayer } from "../../game-logic/game-status";
+import { PlayerBoardPosition } from "../../game-logic/player";
 import { unwrapOr } from "../../utils/optional";
 
 import styles from "./PlayerBoard.module.css";
@@ -10,7 +11,7 @@ import PlayerInfo from "./PlayerInfo";
 interface PlayerBoardProps {
 	enabled?: boolean;
 	debug?: boolean;
-	player: PlayerId;
+	player: GamePlayer;
 	position: PlayerBoardPosition;
 	onSelect: (cell: CellId) => void;
 	board: BoardSlice;
@@ -47,7 +48,7 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 				))}
 			</div>
 			<div className={clsx({ [styles.infoLeft]: isTop, [styles.infoRight]: !isTop })}>
-				<PlayerInfo enabled={props.enabled} playerId={props.player} />
+				<PlayerInfo score={props.player.score} enabled={props.enabled} name={props.player.name} />
 			</div>
 		</div>
 	);

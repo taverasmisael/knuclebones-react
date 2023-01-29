@@ -1,7 +1,12 @@
 import produce from "immer";
-import { makeMoveOnBoard, Board, CellId } from "../game-logic/board";
+import { makeMoveOnBoard, Board, CellId, calculateBoardScore } from "../game-logic/board";
 import { DiceValue } from "../game-logic/dice";
-import { GameState, isGameRunning, createNewGameOver } from "../game-logic/game-status";
+import {
+	GameState,
+	isGameRunning,
+	createNewGameOver,
+	PlayerRecord,
+} from "../game-logic/game-status";
 import { PlayerBoardPosition } from "../game-logic/player";
 import { isNone, Some, isSome } from "./optional";
 
@@ -39,3 +44,22 @@ export const checkForWinner = (gs: GameState): GameState => {
 	}
 	return gs;
 };
+
+export const updateScore = (gameState: GameState): GameState =>
+	produce(gameState, (gs) => {
+		if (!isGameRunning(gs)) return gs;
+		if (isNone(gs.board)) return gs;
+		if (isNone(gs.players)) return gs;
+		const scores = gs.board
+			.map((b) => ({
+				[PlayerBoardPosition.TOP]: calculateBoardScore(b.top),
+				[PlayerBoardPosition.BOTTOM]: calculateBoardScore(b.bottom),
+			}))
+			.unwrap();
+		gs.players = gs.players.map((p) => {
+			const players = { ...p };
+			players.top = { ...players.top, score: scores[PlayerBoardPosition.TOP] };
+			players.bottom = { ...players.bottom, score: scores[PlayerBoardPosition.BOTTOM] };
+			return players;
+		}) as Some<PlayerRecord>;
+	});
