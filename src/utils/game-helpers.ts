@@ -36,11 +36,14 @@ export const checkForWinner = (gs: GameState): GameState => {
 	if (!isGameRunning(gs)) return gs;
 	if (isNone(gs.board)) return gs;
 	if (isNone(gs.players)) return gs;
+	const players = gs.players.unwrap();
 	const board = gs.board.unwrap();
 	const topFull = board.top.every((row) => row.every((cell) => isSome(cell.value)));
 	const bottomFull = board.bottom.every((row) => row.every((cell) => isSome(cell.value)));
 	if (topFull || bottomFull) {
-		return createNewGameOver(gs, topFull ? PlayerBoardPosition.TOP : PlayerBoardPosition.BOTTOM);
+		const winner =
+			players.top.score > players.bottom.score ? players.top.name : players.bottom.name;
+		return createNewGameOver(gs, winner);
 	}
 	return gs;
 };

@@ -7,6 +7,7 @@ import { GameState } from "./game-status";
 interface UseNewKnuclebonesGame extends Omit<KnucklebonesGame, "getGameStatus"> {
 	readonly players: GameState["players"];
 	readonly currentPlayer: GameState["currentPlayer"];
+	getWinner: () => GameState["winner"];
 }
 
 export function useNewgame(): UseNewKnuclebonesGame {
@@ -25,7 +26,7 @@ export function useNewgame(): UseNewKnuclebonesGame {
 		moveBottomPlayer: compose(setGame, game.moveBottomPlayer),
 		moveTopPlayer: compose(setGame, game.moveTopPlayer),
 		start: compose(setGame, game.start),
-
+		getWinner:()=> game.getGameStatus().winner,
 		// Custom getters
 		getBoard: game.getBoard,
 		get players() {

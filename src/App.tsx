@@ -24,7 +24,7 @@ function App() {
 			const nextValidMove = flatMap(game.getBoard(), (b) => getNextValidMove(b.top, 1));
 			if (isSome(nextValidMove)) {
 				setTimeout(() => {
-					game.moveTopPlayer(nextValidMove.unwrap(), rnd(1, 6));
+					game.moveTopPlayer(nextValidMove.unwrap(), 6);
 				}, 200);
 			}
 		}
@@ -38,10 +38,13 @@ function App() {
 		}
 	};
 
+	const winner = game.getWinner();
+
 	const gameBoard = game.getBoard().map((b) => {
 		const players = game.players.unwrap();
 		return (
 			<>
+				<h1>{unwrapOr("No winner yet", winner)}</h1>
 				<Board
 					debug
 					enabled={contains(game.currentPlayer, PlayerBoardPosition.TOP)}

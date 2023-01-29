@@ -35,7 +35,7 @@ export interface GameOver extends GameState {
 	readonly _type: GameStateTypes.GAME_OVER;
 	board: Some<Board>;
 	currentPlayer: None;
-	winner: Some<PlayerBoardPosition>;
+	winner: Some<PlayerId>;
 	players: Some<PlayerRecord>;
 }
 
@@ -72,10 +72,7 @@ export function createNewGameRunning(
 	};
 }
 
-export function createNewGameOver(
-	gameState: GameRunning,
-	winner: PlayerBoardPosition,
-): GameOver | GameRunning {
+export function createNewGameOver(gameState: GameRunning, winner: PlayerId): GameOver {
 	return {
 		...gameState,
 		_type: GameStateTypes.GAME_OVER,
