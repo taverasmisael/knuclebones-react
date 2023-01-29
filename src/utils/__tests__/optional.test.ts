@@ -68,11 +68,11 @@ describe("Optional types", () => {
 		});
 		describe("unwrapOr", () => {
 			test("should return the value for Some", () => {
-				expect(unwrapOr(Some(1), 2)).toBe(1);
+				expect(unwrapOr(2, Some(1))).toBe(1);
 			});
 
 			test("should return the default value for None", () => {
-				expect(unwrapOr(None(), 2)).toBe(2);
+				expect(unwrapOr(2, None())).toBe(2);
 			});
 		});
 

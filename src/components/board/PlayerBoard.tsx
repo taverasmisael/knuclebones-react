@@ -40,7 +40,7 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 								disabled={!cell.enabled}
 								onClick={onCellClick(cell.id)}
 							>
-								{unwrapOr(cell.value.map(rambda.toString), props.debug ? cell.id : "")}
+								{unwrapOr(props.debug ? cell.id : "", cell.value.map(rambda.toString))}
 							</button>
 						))}
 					</div>

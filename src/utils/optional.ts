@@ -58,7 +58,7 @@ export function None(): None {
 }
 
 // helpers
-export function unwrapOr<T>(value: Optional<T>, defaultValue: T): T {
+export function unwrapOr<T>(defaultValue: T, value: Optional<T>): T {
 	if (isNone(value)) {
 		return defaultValue;
 	}

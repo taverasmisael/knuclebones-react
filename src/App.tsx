@@ -63,7 +63,7 @@ function App() {
 		);
 	});
 
-	return <>{unwrapOr(gameBoard, <></>)}</>;
+	return <>{unwrapOr(<></>, gameBoard)}</>;
 }
 
 export default App;
