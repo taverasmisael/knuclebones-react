@@ -1,6 +1,6 @@
-import { pathOr } from "rambda";
+import * as R from "rambda";
 import { produce } from "immer";
-import { isSome, None, Optional, Some } from "../utils/optional";
+import { isSome, None, Optional, Some, unwrapOr } from "../utils/optional";
 import { DiceValue } from "./dice";
 import { PlayerId, PlayerBoardPosition } from "./player";
 
@@ -45,13 +45,13 @@ export function getValueOnCoordinates(
 	position: PlayerBoardPosition,
 	coordinate: BoardCoordinate,
 ): BoardValue | None {
-	return pathOr(None(), [position, ...coordinate], board);
+	return R.pathOr(None(), [position, ...coordinate], board);
 }
 
-export function createFullBoardSlice(): BoardSlice {
+export function createFullBoardSlice(value: DiceValue = 1): BoardSlice {
 	return Array.from({ length: 3 }, (_, ridx) =>
 		Array.from({ length: 3 }, (_, cidx) => ({
-			value: Some(1),
+			value: Some(value),
 			enabled: false,
 			id: `${ridx as BoardPosition}-${cidx as BoardPosition}`,
 		})),
@@ -103,4 +103,18 @@ export function getNextValidMove(board: BoardSlice, move?: BoardPosition): Optio
 	);
 	const cellId = validCells.map((cell) => cell.id)[idx];
 	return Optional(cellId);
+}
+
+export const calculateBoardScore = R.pipe(R.map(calculateColumnScore), R.reduce(R.add, 0));
+
+type CellValue = Pick<BoardValue, "value">;
+const unwrapOrZero: (o: Optional<number>) => number = R.curry(unwrapOr)(0);
+export function calculateColumnScore(column: CellValue[]): number {
+	const group = R.pipe(
+		R.map(R.pipe(R.prop("value"), unwrapOrZero)),
+		R.groupBy<number>(R.toString),
+	)(column);
+	const sumGroup = (group: number[]) => R.sum(group) * group.length;
+	const sumColValues = R.reduce<number[], number>((acc, group) => acc + sumGroup(group), 0);
+	return R.pipe(R.values, sumColValues)(group);
 }
