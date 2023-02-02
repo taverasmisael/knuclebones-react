@@ -1,9 +1,12 @@
 import clsx from "clsx";
 import * as rambda from "rambda";
+import { useState } from "react";
 import { BoardSlice, CellId } from "../../game-logic/board";
+import { DiceValue } from "../../game-logic/dice";
 import { GamePlayer } from "../../game-logic/game-status";
 import { PlayerBoardPosition } from "../../game-logic/player";
-import { unwrapOr } from "../../utils/optional";
+import { isNone, None, Optional, unwrapOr } from "../../utils/optional";
+import BoardDice from "./BoardDice";
 
 import styles from "./PlayerBoard.module.css";
 import PlayerInfo from "./PlayerInfo";
@@ -13,19 +16,29 @@ interface PlayerBoardProps {
 	debug?: boolean;
 	player: GamePlayer;
 	position: PlayerBoardPosition;
-	onSelect: (cell: CellId) => void;
+	onSelect: (cell: CellId, value: DiceValue) => void;
 	board: BoardSlice;
 }
 
 const getRowOrientation = <T,>(isTop: boolean, row: T[]) => (isTop ? rambda.reverse(row) : row);
 
 export default function PlayerBoard(props: PlayerBoardProps) {
-	const onCellClick = (cellId: CellId) => () => props.onSelect(cellId);
+	const [diceValue, setDiceValue] = useState<Optional<DiceValue>>(None());
+	const onCellClick = (cellId: CellId) => () => {
+		if(isNone(diceValue)) return;
+		setDiceValue((value) => {
+			props.onSelect(cellId, value.unwrap());
+			return None();
+		});
+	};
 	const isTop = props.position === PlayerBoardPosition.TOP;
 
 	return (
 		<div className={clsx(styles.container, styles[isTop ? "containerTop" : "containerBottom"])}>
 			{props.debug && <div className={styles.debugRibbon}>DEBUG MODE ENABLED</div>}
+			<div className={clsx({ [styles.infoLeft]: !isTop, [styles.infoRight]: isTop })}>
+				<BoardDice set={setDiceValue} value={diceValue} />
+			</div>
 			<div
 				aria-disabled={!props.enabled}
 				className={clsx(styles.board, { [styles.disabledBoard]: !props.enabled })}

@@ -7,11 +7,6 @@ import { PlayerBoardPosition } from "./game-logic/player";
 import { useNewgame } from "./game-logic/useKnucklebonesGame";
 import { unwrapOr, contains, isSome, flatMap } from "./utils/optional";
 
-function rnd(min: DiceValue, max: DiceValue): DiceValue {
-	// min and max included
-	return Math.floor(Math.random() * (max - min + 1) + min) as DiceValue;
-}
-
 function App() {
 	const game = useNewgame();
 
@@ -30,11 +25,11 @@ function App() {
 		}
 	}, [game]);
 
-	const onSelect = (player: PlayerBoardPosition) => (cell: CellId) => {
+	const onSelect = (player: PlayerBoardPosition) => (cell: CellId, value: DiceValue) => {
 		if (player === "top") {
-			game.moveTopPlayer(cell, rnd(1, 6));
+			game.moveTopPlayer(cell, value);
 		} else {
-			game.moveBottomPlayer(cell, rnd(1, 6));
+			game.moveBottomPlayer(cell, value);
 		}
 	};
 
@@ -47,7 +42,6 @@ function App() {
 				<h1>{unwrapOr("", winner)}</h1>
 				{Object.values(PlayerBoardPosition).map((pos) => (
 					<Board
-						debug
 						key={pos}
 						enabled={contains(game.currentPlayer, pos)}
 						position={pos}
