@@ -9,19 +9,32 @@
   column-gap: var(--column-gap, 2rem);
   grid-template-areas: 'infoLeft board infoRight';
   margin: 2rem auto;
+  padding: 1em 0;
   position: relative;
 }
 
+.container + .container {
+  border-top: 1px solid red;
+}
+
 .debugRibbon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-family: "Victor Mono";
   background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   color: #fff;
+  font-family: 'Victor Mono';
   font-size: 0.75rem;
+  font-weight: 700;
   padding: 0.25rem 0.5rem;
+  position: absolute;
   text-transform: uppercase;
+  top: 1.25em;
+}
+
+.containerTop .debugRibbon {
+  left: 0;
+}
+.containerBottom .debugRibbon {
+  right: 0;
 }
 
 .containerTop {

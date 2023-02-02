@@ -26,7 +26,7 @@ export function useNewgame(): UseNewKnuclebonesGame {
 		moveBottomPlayer: compose(setGame, game.moveBottomPlayer),
 		moveTopPlayer: compose(setGame, game.moveTopPlayer),
 		start: compose(setGame, game.start),
-		getWinner:()=> game.getGameStatus().winner,
+		getWinner: () => game.getGameStatus().winner,
 		// Custom getters
 		getBoard: game.getBoard,
 		get players() {

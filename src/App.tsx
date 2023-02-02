@@ -38,30 +38,24 @@ function App() {
 		}
 	};
 
-	const winner = game.getWinner();
+	const winner = game.getWinner().map((w) => `${w} wins 🎉`);
 
 	const gameBoard = game.getBoard().map((b) => {
 		const players = game.players.unwrap();
 		return (
 			<>
-				<h1>{unwrapOr("No winner yet", winner)}</h1>
-				<Board
-					debug
-					enabled={contains(game.currentPlayer, PlayerBoardPosition.TOP)}
-					position={PlayerBoardPosition.TOP}
-					player={players.top}
-					board={b.top}
-					onSelect={onSelect(PlayerBoardPosition.TOP)}
-				/>
-				<hr />
-				<Board
-					debug
-					enabled={contains(game.currentPlayer, PlayerBoardPosition.BOTTOM)}
-					position={PlayerBoardPosition.BOTTOM}
-					board={b.bottom}
-					player={players.bottom}
-					onSelect={onSelect(PlayerBoardPosition.BOTTOM)}
-				/>
+				<h1>{unwrapOr("", winner)}</h1>
+				{Object.values(PlayerBoardPosition).map((pos) => (
+					<Board
+						debug
+						key={pos}
+						enabled={contains(game.currentPlayer, pos)}
+						position={pos}
+						player={players[pos]}
+						board={b[pos]}
+						onSelect={onSelect(pos)}
+					/>
+				))}
 			</>
 		);
 	});
