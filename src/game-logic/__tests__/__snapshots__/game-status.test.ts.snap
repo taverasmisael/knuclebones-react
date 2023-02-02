@@ -15,7 +15,7 @@ exports[`game-status > createNewGameOver (P1 winner) 1`] = `
   "_type": "GAME_OVER",
   "board": "Some({\\"top\\":[[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"0-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"1-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"2-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-2\\"}]],\\"bottom\\":[[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"0-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"1-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"2-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-2\\"}]]})",
   "currentPlayer": "None()",
-  "players": "Some({\\"top\\":\\"player2\\",\\"bottom\\":\\"player1\\"})",
+  "players": "Some({\\"top\\":{\\"name\\":\\"player1\\",\\"score\\":0},\\"bottom\\":{\\"name\\":\\"player2\\",\\"score\\":0}})",
   "winner": "Some(\\"bottom\\")",
 }
 `;
@@ -25,7 +25,7 @@ exports[`game-status > createNewGameOver (P2 winner) 1`] = `
   "_type": "GAME_OVER",
   "board": "Some({\\"top\\":[[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"0-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"1-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"2-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-2\\"}]],\\"bottom\\":[[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"0-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"1-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"2-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-2\\"}]]})",
   "currentPlayer": "None()",
-  "players": "Some({\\"top\\":\\"player2\\",\\"bottom\\":\\"player1\\"})",
+  "players": "Some({\\"top\\":{\\"name\\":\\"player1\\",\\"score\\":0},\\"bottom\\":{\\"name\\":\\"player2\\",\\"score\\":0}})",
   "winner": "Some(\\"top\\")",
 }
 `;
@@ -35,7 +35,7 @@ exports[`game-status > createNewGameRunning 1`] = `
   "_type": "GAME_RUNNING",
   "board": "Some({\\"top\\":[[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"0-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"1-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"2-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-2\\"}]],\\"bottom\\":[[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"0-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"0-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"1-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"1-2\\"}],[{\\"value\\":\\"None()\\",\\"enabled\\":true,\\"id\\":\\"2-0\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-1\\"},{\\"value\\":\\"None()\\",\\"enabled\\":false,\\"id\\":\\"2-2\\"}]]})",
   "currentPlayer": "Some(\\"bottom\\")",
-  "players": "Some({\\"top\\":\\"player2\\",\\"bottom\\":\\"player1\\"})",
+  "players": "Some({\\"top\\":{\\"name\\":\\"player1\\",\\"score\\":0},\\"bottom\\":{\\"name\\":\\"player2\\",\\"score\\":0}})",
   "winner": "None()",
 }
 `;
