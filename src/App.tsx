@@ -5,6 +5,7 @@ import { CellId, getNextValidMove } from "./game-logic/board";
 import { DiceValue } from "./game-logic/dice";
 import { PlayerBoardPosition } from "./game-logic/player";
 import { useNewgame } from "./game-logic/useKnucklebonesGame";
+import { rollDice } from "./utils/dice";
 import { unwrapOr, contains, isSome, flatMap } from "./utils/optional";
 
 function App() {
@@ -16,10 +17,10 @@ function App() {
 
 	useEffect(() => {
 		if (contains(game.currentPlayer, PlayerBoardPosition.TOP)) {
-			const nextValidMove = flatMap(game.getBoard(), (b) => getNextValidMove(b.top, 1));
+			const nextValidMove = flatMap(game.getBoard(), (b) => getNextValidMove(b.top));
 			if (isSome(nextValidMove)) {
 				setTimeout(() => {
-					game.moveTopPlayer(nextValidMove.unwrap(), 6);
+					game.moveTopPlayer(nextValidMove.unwrap(), rollDice());
 				}, 200);
 			}
 		}
