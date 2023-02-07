@@ -1,6 +1,6 @@
 import * as R from "rambda";
 import { produce } from "immer";
-import { isSome, None, Optional, Some, unwrapOr } from "../utils/optional";
+import { contains, isNone, isSome, None, Optional, Some, unwrapOr } from "../utils/optional";
 import { DiceValue } from "./dice";
 import { PlayerId, PlayerBoardPosition } from "./player";
 
@@ -76,14 +76,17 @@ export function makeMoveOnBoard(
 ): Board {
 	return produce(board, (draft) => {
 		const [row, column] = cellIdToCoordinate(cellId);
+		const oppositePosition = position === PlayerBoardPosition.TOP ? "bottom" : "top";
 		const cell = draft[position][row][column];
-		if (isSome(cell.value)) throw new Error(`Cell already played ${cell.value}`);
+		if (isSome(cell.value)) throw new Error(`Cell ${cell.id} already played ${cell.value}`);
 		if (!cell.enabled) throw new Error(`Invalid move on ${position} (${row}, ${column})`);
 		draft[position][row][column] = {
 			...cell,
 			value: Some(value),
 			enabled: false,
 		};
+
+		draft[oppositePosition] = displaceMovements(draft[oppositePosition], row, value);
 
 		const nextCell = column + 1;
 		if (nextCell < 3) {
@@ -117,4 +120,33 @@ export function calculateColumnScore(column: CellValue[]): number {
 	const sumGroup = (group: number[]) => R.sum(group) * group.length;
 	const sumColValues = R.reduce<number[], number>((acc, group) => acc + sumGroup(group), 0);
 	return R.pipe(R.values, sumColValues)(group);
+}
+
+// TODO: change function name
+export function displaceMovements(
+	slice: BoardSlice,
+	row: BoardPosition,
+	value: DiceValue,
+): BoardSlice {
+	return produce(slice, (b) => {
+		b[row] = b[row].map((cell) =>
+			contains(cell.value, value) ? { ...cell, enabled: false, value: None() } : cell,
+		);
+		const otherValues = b[row].filter((cell) => isSome(cell.value));
+		if (otherValues.length) {
+			b[row] = b[row].map((cell, idx) => ({
+				...cell,
+				value: R.pathOr(None(), [idx, "value"], otherValues),
+				enabled: false,
+			}));
+		}
+
+		const firstNone = b[row].findIndex((cell) => isNone(cell.value));
+		if (firstNone !== -1) {
+			b[row] = b[row].map((cell, idx) => ({
+				...cell,
+				enabled: idx === firstNone,
+			}));
+		}
+	});
 }

@@ -16,6 +16,8 @@ import {
 	getNextValidMove,
 	calculateColumnScore,
 	calculateBoardScore,
+	displaceMovements,
+	BoardSlice,
 } from "../board";
 import { PlayerBoardPosition } from "../player";
 import produce from "immer";
@@ -243,5 +245,58 @@ describe("getBoardScore", () => {
 	test("calculateBoardScore: a full board (of 6s) is always 27", () => {
 		const actual = calculateBoardScore(createFullBoardSlice(6));
 		expect(actual).toBe(162);
+	});
+});
+
+describe("displace movements", () => {
+	test("it set to None all the cells with the pass value and enables the first empty one", () => {
+		const board = createFullBoardSlice(2);
+		const actual = displaceMovements(board, 0, 2);
+		expect(getFullCells(board)).toHaveLength(9);
+		expect(getEmptyCells(actual)).toHaveLength(3);
+		expect(getEnabledIds(actual)).toEqual(["0-0"]);
+	});
+
+	test("if there are other values it should move them to the top", () => {
+		const board = createFullBoardSlice(2);
+		// Add a cell with different value
+		board[0][2] = { id: "0-2", value: Some(3), enabled: false };
+		const actual = displaceMovements(board, 0, 2);
+		expect(getFullCells(board)).toHaveLength(9);
+		expect(getEmptyCells(actual)).toHaveLength(2);
+		expect(actual[0][2].value).toBeNone();
+		expect(actual[0][0].value).toBeSome(3);
+		expect(getEnabledIds(actual)).toEqual(["0-1"]);
+	});
+
+	test("do nothing if there are no cells with the value", () => {
+		const board = createFullBoardSlice(2);
+		const actual = displaceMovements(board, 0, 3);
+		expect(getFullCells(board)).toHaveLength(9);
+		expect(getEmptyCells(actual)).toHaveLength(0);
+		expect(actual).toEqual(board);
+	});
+
+	test("enables the right cells after the displacement", () => {
+		const board: BoardSlice = [
+			[
+				{ id: "0-0", value: None(), enabled: true },
+				{ id: "0-1", value: None(), enabled: false },
+				{ id: "0-2", value: None(), enabled: false },
+			],
+			[
+				{ id: "1-0", value: Some(2), enabled: false },
+				{ id: "1-1", value: Some(3), enabled: false },
+				{ id: "1-2", value: None(), enabled: true },
+			],
+			[
+				{ id: "2-0", value: Some(1), enabled: false },
+				{ id: "2-1", value: None(), enabled: true },
+				{ id: "2-2", value: None(), enabled: false },
+			],
+		];
+
+		const actual = displaceMovements(board, 1, 2);
+		expect(getEnabledIds(actual)).toEqual(["0-0", "1-1", "2-1"]);
 	});
 });
