@@ -86,8 +86,6 @@ export function makeMoveOnBoard(
 			enabled: false,
 		};
 
-		draft[oppositePosition] = displaceMovements(draft[oppositePosition], row, value);
-
 		const nextCell = column + 1;
 		if (nextCell < 3) {
 			draft[position][row] = draft[position][row].map((cell, idx) => ({
@@ -95,6 +93,9 @@ export function makeMoveOnBoard(
 				enabled: idx === nextCell,
 			}));
 		}
+
+		// Move it down because we might want to make this async with animations and stuff
+		draft[oppositePosition] = displaceMovements(draft[oppositePosition], row, value);
 	});
 }
 
