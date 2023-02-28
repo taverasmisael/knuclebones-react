@@ -19,6 +19,7 @@ export default function BoardDice(props: BoardDiceProps) {
 				className={styles.dice}
 				aria-label={unwrapOr(undefined, props.value.map(rambda.toString))}
 				onClick={() => props.set(Some(rollDice()))}
+				data-testid="dice"
 			>
 				{unwrapOr<ReactElement>(<strong>ROLL</strong>, props.value.map(createDiceFace))}
 			</button>

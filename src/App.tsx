@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import "./App.css";
 import { Board } from "./components/board";
-import { CellId, getNextValidMove } from "./game-logic/board";
+import { CellId } from "./game-logic/board";
 import { DiceValue } from "./game-logic/dice";
 import { PlayerBoardPosition } from "./game-logic/player";
 import { useNewgame } from "./game-logic/useKnucklebonesGame";
-import { rollDice } from "./utils/dice";
-import { unwrapOr, contains, isSome, flatMap } from "./utils/optional";
+import { unwrapOr, contains } from "./utils/optional";
 
 function App() {
 	const game = useNewgame();
@@ -14,17 +13,6 @@ function App() {
 	useEffect(() => {
 		game.start(["Marcos", "Rome"]);
 	}, []);
-
-	useEffect(() => {
-		if (contains(game.currentPlayer, PlayerBoardPosition.TOP)) {
-			const nextValidMove = flatMap(game.getBoard(), (b) => getNextValidMove(b.top));
-			if (isSome(nextValidMove)) {
-				setTimeout(() => {
-					game.moveTopPlayer(nextValidMove.unwrap(), rollDice());
-				}, 200);
-			}
-		}
-	}, [game]);
 
 	const onSelect = (player: PlayerBoardPosition) => (cell: CellId, value: DiceValue) => {
 		if (player === "top") {
@@ -35,7 +23,6 @@ function App() {
 	};
 
 	const winner = game.getWinner().map((w) => `${w} wins 🎉`);
-
 	const gameBoard = game.getBoard().map((b) => {
 		const players = game.players.unwrap();
 		return (

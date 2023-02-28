@@ -34,7 +34,7 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 	const isTop = props.position === PlayerBoardPosition.TOP;
 
 	return (
-		<div className={clsx(styles.container, styles[isTop ? "containerTop" : "containerBottom"])}>
+		<div className={clsx(styles.container, styles[isTop ? "containerTop" : "containerBottom"])} data-testid={`${props.position}-board`}>
 			{props.debug && <div className={styles.debugRibbon}>DEBUG MODE ENABLED</div>}
 			<div className={clsx({ [styles.infoLeft]: !isTop, [styles.infoRight]: isTop })}>
 				{props.enabled && (
@@ -48,10 +48,10 @@ export default function PlayerBoard(props: PlayerBoardProps) {
 				{props.board.map((row, rowIndex) => (
 					// rome-ignore lint/suspicious/noArrayIndexKey: this is a fixed size array
 					<div key={rowIndex} className={styles.row}>
-						{getRowOrientation(isTop, row).map((cell, cellIndex) => (
+						{getRowOrientation(isTop, row).map((cell) => (
 							<button
 								key={cell.id}
-								data-cell-id={cellIndex}
+								data-testid={cell.id}
 								className={styles.cell}
 								disabled={!cell.enabled}
 								onClick={onCellClick(cell.id)}
